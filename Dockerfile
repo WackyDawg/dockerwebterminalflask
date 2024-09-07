@@ -8,13 +8,25 @@ RUN apt-get update && apt-get install -y \
     python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
+# Create a non-root user and set the password
+RUN useradd -m -s /bin/bash myuser \
+    && echo "myuser:123456" | chpasswd \
+    && adduser myuser sudo \
+    && echo "myuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+
 # Set the working directory in the container
 WORKDIR /app
 
 # Copy the entire current directory into the container at /app
 COPY . /app
 
-# Install pyxtermjs (or other Python dependencies)
+# Change ownership of the /app directory to the new user
+RUN chown -R myuser:myuser /app
+
+# Switch to the non-root user
+USER myuser
+
+# Install Python dependencies as the non-root user
 RUN pip3 install -r requirements.txt --break-system-packages
 
 # Run the main Python script when the container starts
