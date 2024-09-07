@@ -3,6 +3,7 @@ FROM ubuntu:latest
 
 # Update package lists and install necessary packages
 RUN apt-get update && apt-get install -y \
+    apt-get install -y sudo \
     python3 \
     python3-pip \
     && rm -rf /var/lib/apt/lists/*
