@@ -1,5 +1,5 @@
 # Use the official Kali Linux image as a base
-FROM FROM parrotsec/security:latest
+FROM parrotsec/security:latest
 
 # Update package lists and install necessary packages
 RUN apt-get update && apt-get install -y \
